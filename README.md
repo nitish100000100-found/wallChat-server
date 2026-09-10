@@ -2,6 +2,8 @@
 
 WallChat is a real-time, peer-to-peer video chat app. No accounts, no profiles — just instant conversations. Meet a random stranger, or connect directly with a friend using their socket ID, then talk over live video, audio, and text.
 
+🔗 **Live demo:** [wall-chat-client.vercel.app](https://wall-chat-client.vercel.app/)
+
 The project has two parts, in two repos:
 
 | Repo | Role | Stack |
@@ -42,6 +44,15 @@ Video and audio never pass through the server — once two browsers are matched,
 2. The server either pairs two random waiting users, or connects two users directly by socket ID (personal room).
 3. The two browsers exchange a WebRTC `offer`, `answer`, and `ice-candidate`s — the server just relays these messages, it doesn't inspect or store them.
 4. Once the WebRTC handshake completes, video/audio flows **directly between the two browsers**, bypassing the server entirely. Text chat messages continue to be relayed through the server.
+
+## Try It Live
+
+The client is deployed at **[wall-chat-client.vercel.app](https://wall-chat-client.vercel.app/)**. Open it in two different browser tabs, devices, or share the link with a friend to test:
+
+- **Random chat** — click "Chat with Random People" in both tabs to get matched automatically.
+- **Personal room** — click "Chat with Your Person", copy your socket ID from one tab, and paste it into the other.
+
+Allow camera/microphone access when prompted.
 
 ## Prerequisites
 
@@ -123,6 +134,7 @@ Open the URL Vite prints (typically `http://localhost:5173`).
 
 ### `wallChat-client`
 
+- **Live:** [wall-chat-client.vercel.app](https://wall-chat-client.vercel.app/)
 - **Pages:** `LandingPage` (choose random or personal chat), `Chat` (random matching + video), `PersonalRoom` (connect via socket ID + video), `Not-Found` (404).
 - **Scripts:** `npm run dev`, `npm run build`, `npm run preview`, `npm run lint`.
 - Deploys as a static SPA — includes a `vercel.json` with rewrite rules for [Vercel](https://vercel.com/).
@@ -136,14 +148,9 @@ Open the URL Vite prints (typically `http://localhost:5173`).
 - **Script:** `npm start` runs `server.js`.
 - Full details: see the server repo's README.
 
-## Known Limitations
-
-- Server state is **in-memory only** — restarting the server drops all active pairings, and it won't scale horizontally without an external store (e.g. Redis) or sticky sessions.
-- No **TURN server** is configured, so WebRTC connections may fail behind strict NATs/firewalls. For production use, add TURN credentials to the client's `RTCPeerConnection` config.
-
 
 ## Deployment
 
-- **Client:** build with `npm run build` and deploy the `dist/` folder to any static host (Vercel config included).
+- **Client:** build with `npm run build` and deploy the `dist/` folder to any static host (Vercel config included). Currently live at [wall-chat-client.vercel.app](https://wall-chat-client.vercel.app/).
 - **Server:** deploy to any Node.js host (Render, Railway, Fly.io, a VPS, etc.) and run `npm start`.
 - Set `FRONTEND_URL` (server) and `VITE_BACKEND_URL` (client) to point at each other's **production** URLs before deploying.
